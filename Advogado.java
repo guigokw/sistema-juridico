@@ -43,6 +43,7 @@ public class Advogado extends Pessoa {
         System.out.println("NUMERO DA OAB: UF " +this.numeroOab);
         System.out.println("ESPECIALIDADE DO ADVOGADO: " +especialidadeAdvogado);
         System.out.println("DESCRICAO DA ESPECIALIDADE: " +especialidadeAdvogado.getDescricao());
+        System.out.println("--------------------------");
     }
 
     public void adicionarClienteAoAdvogado(Reu reu) throws ReuDuplicadoException {
@@ -55,7 +56,7 @@ public class Advogado extends Pessoa {
     }
 
                  // CasoJuridico caso -- adicionar depois da criação da classe
-    public void defenderReu() {
+    public void defenderReu(CasoJuridico caso) throws ReuNaoEncontradoException {
         System.out.print("qual o id do reu que vc deseja defender?");
         int id = input.nextInt();
 
@@ -78,7 +79,7 @@ public class Advogado extends Pessoa {
                 System.out.print("insira a defesa que deseja fazer ao reu:");
                 String defesa = input.nextLine();
 
-                // caso.argumentosDefesa.add(defesa) -- adicionar depois
+                caso.argumentosDeDefesa.add(defesa);
 
                 break;
 
@@ -90,4 +91,5 @@ public class Advogado extends Pessoa {
                 System.out.println("opcao invalida, por favor digite novamente");
         }
     }
+
 }
