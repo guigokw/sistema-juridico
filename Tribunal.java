@@ -1,25 +1,53 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Tribunal {
     Scanner input = new Scanner(System.in);
 
     List<Advogado> advogados = new ArrayList<>();
+    Set<String> numeroOab = new HashSet<>();
     Map<Integer, CasoJuridico> casosDoTribunal = new HashMap<>();
+    Set<Integer> numeroProcesso = new HashSet<>();
     List<Juiz> juizes = new ArrayList<>();
+    List<Reu> reus = new ArrayList<>();
 
-    public void adicionarCaso(int numeroCaso, CasoJuridico caso) {
-        casosDoTribunal.put(caso.getNumeroProcesso(), caso);
-        System.out.println("caso adicionado a loista de casos do tribunal");
+    public void adicionarCaso(int numeroCaso, CasoJuridico caso) throws NumeroProcessoDuplicadoException {
+        if (! numeroProcesso.add(numeroCaso)) {
+            throw new NumeroProcessoDuplicadoException("nao foi possivel adicionar o caso, pois o numero do processo esta duplicado");
+        } else {
+            casosDoTribunal.put(caso.getNumeroProcesso(), caso);
+            System.out.println("caso adicionado a lista de casos do tribunal");
+        }
     }
 
-    public void adicionarAdvogado(Advogado advogado) {
-        advogados.add(advogado);
-        System.out.println("advogado " +advogado.getNomePessoa()+ " adicionado a lista de advogados");
+    public void adicionarAdvogado(Advogado advogado) throws AdvogadoDuplicadoException {
+        if (!numeroOab.add(advogado.getNumeroOab())) {
+            throw new AdvogadoDuplicadoException("nao foi possivel adicionar o advogado pois o numero da oab esta duplicado");
+        } else {
+            advogados.add(advogado);
+            System.out.println("advogado " + advogado.getNomePessoa() + " adicionado a lista de advogados");
+        }
     }
 
     public void adicionarJuiz(Juiz juiz) {
         juizes.add(juiz);
         System.out.println("juiz " +juiz.getNomePessoa()+ " adicionado a lista de juizes");
+    }
+
+    public void cadastrarReu(Reu reu) {
+        reus.add(reu);
+        System.out.println("reu " +reu.getNomePessoa()+ " adicionado a lista de reus do tribunal");
+    }
+
+    public void listarTodosCasosJuridicos() {
+        if (casosDoTribunal.isEmpty()) {
+            System.out.println("a lista de casos juridicos esta vazia");
+        } else {
+            System.out.println("====== LISTA DE CASOS JURIDICOS =====");
+            for (CasoJuridico casos : casosDoTribunal.values()) {
+                casos.exibirDetalhesCaso();
+            }
+        }
     }
 
     public void registrarAdvogadoNoProcesso() throws ProcessoNaoEncontradoException, AdvogadoNaoEncontradoException {
@@ -94,6 +122,63 @@ public class Tribunal {
                     .orElseThrow(() -> new JuizNaoEncontradoException("nao foi poossivel proferir a sentença pois o juiz do id " + idJuiz + " nao foi encontrado"));
 
             juiz.proferirSentenca();
+        }
+    }
+
+    public void advogadoDefenderReu() throws ProcessoNaoEncontradoException {
+        System.out.print("qual o numero do processo do caso em que deseja defender o reu?");
+        int numero = input.nextInt();
+
+        CasoJuridico caso = casosDoTribunal.values().stream()
+                .filter(a -> a.getNumeroProcesso() == numero)
+                .findFirst()
+                .orElseThrow(() -> new ProcessoNaoEncontradoException("nao foi possivel fazer a defesa do reu pois o caso nao foi encontrado"));
+
+        caso.getAdvogadoResponsavel().defenderReu(caso);
+    }
+
+    public void ordenarCasosPeloStatus() {
+        for (CasoJuridico caso : casosDoTribunal.values()) {
+            List<CasoJuridico> casos = casosDoTribunal.values().stream()
+                    .sorted(Comparator.comparing(CasoJuridico::getStatusDoCaso))
+                    .toList();
+
+            if (casos.isEmpty()) {
+                System.out.println("nao há nenhum caso juridico");
+            } else {
+                caso.exibirDetalhesCaso();
+            }
+        }
+    }
+
+    public void filtrarCasosPorTipo() throws IllegalArgumentException {
+        System.out.println("1 - civil");
+        System.out.println("2 - criminal");
+        System.out.println("3 - trabalhista");
+        System.out.println("4 - familiar");
+        System.out.println("--------------------------");
+        System.out.print("qual dessas opcoes de casos vc deseja filtrar?");
+        int opcao = input.nextInt();
+
+        TiposDeProcesso tipo = switch (opcao) {
+            case 1 -> TiposDeProcesso.CIVIL;
+            case 2 -> TiposDeProcesso.CRIMINAL;
+            case 3 -> TiposDeProcesso.TRABALHISTA;
+            case 4 -> TiposDeProcesso.FAMILIAR;
+            default -> throw new IllegalArgumentException("opcao invalida, por favor digite novamente");
+        };
+
+        for (CasoJuridico casos : casosDoTribunal.values()) {
+            List<CasoJuridico> caso = casosDoTribunal.values().stream()
+                    .filter(a -> a.getTipoDeCaso() == tipo)
+                    .toList();
+
+            if (caso.isEmpty()) {
+                System.out.println("nao há nenhum caso do tipo " +tipo);
+            } else {
+                System.out.println("===== CASOS " +tipo+ " =====");
+                casos.exibirDetalhesCaso();
+            }
         }
     }
 }

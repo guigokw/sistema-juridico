@@ -55,18 +55,10 @@ public class Advogado extends Pessoa {
         }
     }
 
-                 // CasoJuridico caso -- adicionar depois da criação da classe
+
     public void defenderReu(CasoJuridico caso) throws ReuNaoEncontradoException {
-        System.out.print("qual o id do reu que vc deseja defender?");
-        int id = input.nextInt();
-
-        Reu reu = clientesAdvogado.values().stream()
-                .filter(a -> a.getIdPessoa() == id)
-                .findFirst()
-                .orElseThrow(() -> new ReuNaoEncontradoException("nao foi possivel apresentar uma defesa ao reu pois ele nao foi encontrado"));
-
         System.out.println("====== INFORMAÇÕES DO REU =======");
-        reu.exibirDetalhes();
+        caso.getReuDoCaso().exibirDetalhes();
 
         System.out.println("1 - sim");
         System.out.println("2 - não");
