@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Tribunal {
     Scanner input = new Scanner(System.in);
@@ -10,9 +9,10 @@ public class Tribunal {
     Set<Integer> numeroProcesso = new HashSet<>();
     List<Juiz> juizes = new ArrayList<>();
     List<Reu> reus = new ArrayList<>();
+    Set<Integer> idDoReu = new HashSet<>();
 
     public void adicionarCaso(int numeroCaso, CasoJuridico caso) throws NumeroProcessoDuplicadoException {
-        if (! numeroProcesso.add(numeroCaso)) {
+        if (!numeroProcesso.add(numeroCaso)) {
             throw new NumeroProcessoDuplicadoException("nao foi possivel adicionar o caso, pois o numero do processo esta duplicado");
         } else {
             casosDoTribunal.put(caso.getNumeroProcesso(), caso);
@@ -25,18 +25,22 @@ public class Tribunal {
             throw new AdvogadoDuplicadoException("nao foi possivel adicionar o advogado pois o numero da oab esta duplicado");
         } else {
             advogados.add(advogado);
-            System.out.println("advogado " + advogado.getNomePessoa() + " adicionado a lista de advogados");
+            System.out.println("advogado " + advogado.nomePessoa + " adicionado a lista de advogados");
         }
     }
 
     public void adicionarJuiz(Juiz juiz) {
         juizes.add(juiz);
-        System.out.println("juiz " +juiz.getNomePessoa()+ " adicionado a lista de juizes");
+        System.out.println("juiz " + juiz.nomePessoa + " adicionado a lista de juizes");
     }
 
     public void cadastrarReu(Reu reu) {
-        reus.add(reu);
-        System.out.println("reu " +reu.getNomePessoa()+ " adicionado a lista de reus do tribunal");
+        if (!idDoReu.add(reu.getIdPessoa())) {
+            throw new ReuDuplicadoException("nao foi possivel adicionar o reu pois o seu id esta duplicado");
+        } else {
+            reus.add(reu);
+            System.out.println("reu " + reu.nomePessoa + " adicionado a lista de reus do tribunal");
+        }
     }
 
     public void listarTodosCasosJuridicos() {
@@ -77,8 +81,9 @@ public class Tribunal {
 
                     CasoJuridico caso = casosDoTribunal.values().stream()
                             .filter(a -> a.getNumeroProcesso() == numeroProcesso)
+                            .filter(b -> b.getTipoDeCaso() == advogado.getEspecialidadeAdvogado())
                             .findFirst()
-                            .orElseThrow(() -> new ProcessoNaoEncontradoException("nao foi possivel proseguir com o registro do advogado pois o numero do processo nao foi encontrado?"));
+                            .orElseThrow(() -> new ProcessoNaoEncontradoException("nao foi possivel proseguir com o registro do advogado pois o numero do processo nao foi encontrado || ou porque o tipo de especialidade do advogado nao bate com o tipo de especialidade do caso"));
 
                     caso.exibirDetalhesCaso();
                     System.out.println("--------------");

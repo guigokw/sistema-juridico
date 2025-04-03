@@ -11,7 +11,7 @@ public class Reu extends Pessoa{
 
     public Reu(int idPessoa, String nomePessoa, int idadeReu) throws IllegalArgumentException {
         super(idPessoa, nomePessoa);
-        if (idadeReu < 0 || idadeReu > 120) {
+        if (idadeReu < 18 || idadeReu > 120) {
             throw new IllegalArgumentException("nao foi possivel adicionar o reu pois a idade esta invalida");
         }
     }
@@ -20,8 +20,12 @@ public class Reu extends Pessoa{
         return idadeReu;
     }
 
-    public void setIdadeReu(int idadeReu) {
-        this.idadeReu = idadeReu;
+    public void setIdadeReu(int idadeReu) throws IllegalArgumentException {
+        if (idadeReu < 18 || idadeReu > 120) {
+            throw new IllegalArgumentException("nao foi possivel adicionar o reu pois a idade esta invalida");
+        } else {
+            this.idadeReu = idadeReu;
+        }
     }
 
     @Override
@@ -44,7 +48,7 @@ public class Reu extends Pessoa{
         System.out.print("qual crime do reu " +this.nomePessoa+ " vc deseja adicionar ho historico criminal");
         String crime = input.nextLine();
 
-        if (crime.isEmpty()) {
+        if (crime == null) {
             throw new IllegalArgumentException("nao foi possivel adicionar o crime para o historico criminal pois o crime esta vazio");
         } else {
             historicoCriminal.add(crime);

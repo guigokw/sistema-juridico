@@ -16,7 +16,7 @@ public class Advogado extends Pessoa {
             this.numeroOab = numeroOab;
             this.especialidadeAdvogado = especialidadeAdvogado;
         } else {
-            throw new IllegalArgumentException("nao foi possivel adicionar o numero da OAB pois a");
+            throw new IllegalArgumentException("nao foi possivel adicionar o numero da OAB pois esta invalido");
         }
     }
 
@@ -24,8 +24,12 @@ public class Advogado extends Pessoa {
         return numeroOab;
     }
 
-    public void setNumeroOab(String numeroOab) {
-        this.numeroOab = numeroOab;
+    public void setNumeroOab(String numeroOab) throws IllegalArgumentException {
+        if (numeroOab.length() != 6 ) {
+            throw new IllegalArgumentException("nao foi possivel adicionar o numero da OAB pois esta invalido");
+        } else {
+            this.numeroOab = numeroOab;
+        }
     }
 
     public TiposDeProcesso getEspecialidadeAdvogado() {
@@ -56,7 +60,7 @@ public class Advogado extends Pessoa {
     }
 
 
-    public void defenderReu(CasoJuridico caso) throws ReuNaoEncontradoException {
+    public void defenderReu(CasoJuridico caso) {
         System.out.println("====== INFORMAÇÕES DO REU =======");
         caso.getReuDoCaso().exibirDetalhes();
 

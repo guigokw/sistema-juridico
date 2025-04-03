@@ -22,8 +22,12 @@ public class Juiz extends Pessoa {
         return anosExperiencia;
     }
 
-    public void setAnosExperiencia(int anosExperiencia) {
-        this.anosExperiencia = anosExperiencia;
+    public void setAnosExperiencia(int anosExperiencia) throws IllegalArgumentException {
+        if (anosExperiencia < 0) {
+            throw new IllegalArgumentException("nao foi possivel adicionar os anos de experiencia do juiz pois o valor registrado é invalido");
+        } else {
+            this.anosExperiencia = anosExperiencia;
+        }
     }
 
     @Override
