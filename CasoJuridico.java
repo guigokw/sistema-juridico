@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class CasoJuridico {
     private int numeroProcesso;
@@ -13,7 +12,6 @@ public class CasoJuridico {
 
     List<String> argumentosDeDefesa = new ArrayList<>();
 
-    Scanner input = new Scanner(System.in);
 
 
     public CasoJuridico(int numeroProcesso, TiposDeProcesso tipoDeCaso, StatusProcesso statusDoCaso, Reu reuDoCaso, Advogado advogadoResponsavel, Juiz juizResponsavel, Sentenca veredicto) throws IllegalArgumentException {

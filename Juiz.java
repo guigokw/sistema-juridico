@@ -45,14 +45,15 @@ public class Juiz extends Pessoa {
         }
     }
 
-    public void proferirSentenca() throws ProcessoNaoEncontradoException {
+    public void proferirSentenca(Juiz juiz) throws ProcessoNaoEncontradoException {
         System.out.print("qual o numero do processo do caso ja qual vc ira proferir a sentença?");
         int numeroProcesso = input.nextInt();
 
         CasoJuridico casoJuridico = casosJulgados.values().stream()
                 .filter(a -> a.getNumeroProcesso() == numeroProcesso)
+                .filter(a -> a.getJuizResponsavel() == juiz)
                 .findFirst()
-                .orElseThrow(() -> new ProcessoNaoEncontradoException("nao foi possivel proferir a sentença pois o processo com o numero " +numeroProcesso+ " nao foi encontrado"));
+                .orElseThrow(() -> new ProcessoNaoEncontradoException("nao foi possivel proferir a sentença pois o processo com o numero " +numeroProcesso+ " nao foi encontrado || ou porque o juiz proposto nao é o juiz do caso registrado"));
 
         System.out.println("====== DETALHES DO CASO =======");
         casoJuridico.exibirDetalhesCaso();
@@ -76,6 +77,7 @@ public class Juiz extends Pessoa {
 
                     casoJuridico.setStatusDoCaso(StatusProcesso.FINALIZADO);
                     casoJuridico.setVeredicto(Sentenca.CULPADO);
+                    casoJuridico.getReuDoCaso().adicionarHistoricoCriminal();
 
                     System.out.println("====== DETALHES COMPLETOS DO CASO =======");
                     System.out.println("NUMERO DO PROCESSO: " +casoJuridico.getNumeroProcesso());

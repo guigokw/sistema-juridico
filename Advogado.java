@@ -59,6 +59,11 @@ public class Advogado extends Pessoa {
         }
     }
 
+    public void removerClienteDoAdvogado(Reu reu) {
+        clientesAdvogado.remove(reu.getIdPessoa(),reu);
+        System.out.println("cliente "+reu.getNomePessoa()+ " removido da lista de clientes de " +this.nomePessoa);
+    }
+
 
     public void defenderReu(CasoJuridico caso) {
         System.out.println("====== INFORMAÇÕES DO REU =======");

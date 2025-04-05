@@ -93,6 +93,7 @@ public class Tribunal {
                     int opcao2 = input.nextInt();
 
                     if (opcao2 == 1) {
+                        caso.getAdvogadoResponsavel().removerClienteDoAdvogado(caso.getReuDoCaso());
                         caso.setAdvogadoResponsavel(advogado);
                         advogado.adicionarClienteAoAdvogado(caso.getReuDoCaso());
                         System.out.println("advogado " + advogado.getNomePessoa() + " registrado no processo de numero " + caso.getNumeroProcesso());
@@ -126,7 +127,7 @@ public class Tribunal {
                     .findFirst()
                     .orElseThrow(() -> new JuizNaoEncontradoException("nao foi poossivel proferir a sentença pois o juiz do id " + idJuiz + " nao foi encontrado"));
 
-            juiz.proferirSentenca();
+            juiz.proferirSentenca(juiz);
         }
     }
 
@@ -140,6 +141,7 @@ public class Tribunal {
                 .orElseThrow(() -> new ProcessoNaoEncontradoException("nao foi possivel fazer a defesa do reu pois o caso nao foi encontrado"));
 
         caso.getAdvogadoResponsavel().defenderReu(caso);
+        
     }
 
     public void ordenarCasosPeloStatus() {
@@ -186,4 +188,5 @@ public class Tribunal {
             }
         }
     }
+
 }

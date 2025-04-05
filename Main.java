@@ -14,6 +14,10 @@ public class Main {
                 System.out.println("4 - adicionar caso");
                 System.out.println("5 - listar todos os casos Juridicos");
                 System.out.println("6 - mudar de advogado no processo");
+                System.out.println("7 - listar clientes do advogado especifico");
+                System.out.println("8 - listar casos julgados do juiz especifico");
+                System.out.println("9 - listar historico criminal de um reu especifico");
+                System.out.println("10 - defender reu");
 
 
                 System.out.print("qual dessas opcoes vc escolhe?");
@@ -28,6 +32,9 @@ public class Main {
                     case 4 -> adicionarCaso(input, tribunal);
                     case 5 -> listarCasosJuridicos(tribunal);
                     case 6 -> mudarAdvogado(tribunal);
+                    case 7 -> listarClientesAdvogado(input, tribunal);
+                    case 8 -> listaCasosJuiz(input, tribunal);
+                    case 9 -> listarHistoricoReu(input, tribunal);
                 }
             } catch (java.util.InputMismatchException e) {
                 System.out.println("entrada invalida, por favor digite novamente");
@@ -208,6 +215,157 @@ public class Main {
         try {
             tribunal.registrarAdvogadoNoProcesso();
         } catch (ProcessoNaoEncontradoException | AdvogadoNaoEncontradoException e) {
+            System.out.println(e.getMessage());
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("entrada invalida, por favor digite novamente");
+        }
+    }
+
+    private static void listarClientesAdvogado(Scanner input, Tribunal tribunal) throws AdvogadoNaoEncontradoException, java.util.InputMismatchException {
+        try {
+            if (tribunal.advogados.isEmpty()) {
+                System.out.println("nao foi possivel realizar a operacao pois a lista de advogados esta vazia");
+            } else {
+                System.out.print("qual o id do advogado que vc deseja listar os clientes?");
+                int idAdvogado = input.nextInt();
+
+                Advogado advogado = tribunal.advogados.stream()
+                        .filter(a -> a.getIdPessoa() == idAdvogado)
+                        .findFirst()
+                        .orElseThrow(() -> new AdvogadoNaoEncontradoException("nao foi possivel listar os clientes do advogado, pois este nao foi encontrado"));
+
+                advogado.exibirDetalhes();
+
+                System.out.println("1 - sim");
+                System.out.println("2 - não");
+                System.out.println("-------------------");
+                System.out.print("esse é o advogado que vc deseja listar os clientes");
+                int opcao = input.nextInt();
+
+                switch (opcao) {
+                    case 1:
+                        if (advogado.clientesAdvogado.isEmpty()) {
+                            System.out.println("nao há nenhum cliente do advogado " + advogado.getNomePessoa() + " registrado");
+                        } else {
+                            System.out.println("====== LISTA DE CLIENTES DO ADVOGADO " + advogado.getNomePessoa().toUpperCase() + " ======");
+                            for (Reu reus : advogado.clientesAdvogado.values()) {
+                                reus.exibirDetalhes();
+                            }
+                        }
+                        break;
+
+                    case 2:
+                        System.out.println("se deseja listar os clientes de um outro advogado, por favor insira novamente");
+                        break;
+                    default:
+                        System.out.println("opcao invalida, por favor digite novamente");
+                }
+            }
+        } catch (AdvogadoNaoEncontradoException e) {
+            System.out.println(e.getMessage());
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("entrada invalida, por favor digite novamente");
+            input.nextLine();
+        }
+    }
+
+    private static void listaCasosJuiz(Scanner input, Tribunal tribunal) throws java.util.InputMismatchException, JuizNaoEncontradoException {
+        try {
+            if (tribunal.juizes.isEmpty()) {
+                System.out.println("nao é possivel realizar a operação pq a lista de juizes esta vazia");
+            } else {
+                System.out.print("qual o id do juiz que vc deseja listar os casos julgados?");
+                int idJuiz = input.nextInt();
+
+                Juiz juiz = tribunal.juizes.stream()
+                        .filter(a -> a.getIdPessoa() == idJuiz)
+                        .findFirst()
+                        .orElseThrow(() -> new JuizNaoEncontradoException("nao foi possivel listar os casos julgados do juiz pois este nao foi encontrado"));
+
+                juiz.exibirDetalhes();
+
+                System.out.println("1 - sim");
+                System.out.println("2 - não");
+                System.out.println("----------------------");
+                System.out.print("esse é o juiz que vc deseja listar os casos");
+                int opcao = input.nextInt();
+
+                switch (opcao) {
+                    case 1:
+                        if (juiz.casosJulgados.isEmpty()) {
+                            System.out.println("a lista de casos julgados do juiz " +juiz.getNomePessoa()+ " esta vazia");
+                        } else {
+                            System.out.println("===== LISTA DE CASOS JULGADOS DO JUIZ " +juiz.getNomePessoa().toUpperCase()+ " ======");
+                            for (CasoJuridico casos : juiz.casosJulgados.values()) {
+                                casos.exibirDetalhesCaso();
+                            }
+                        }
+                        break;
+                    case 2:
+                        System.out.println("se deseja listar os casos de algum juiz, por favor insira novamente");
+                        break;
+                    default:
+                        System.out.println("opcao invalida, por favor digite novamente");
+                }
+            }
+        } catch (JuizNaoEncontradoException e) {
+            System.out.println(e.getMessage());
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("entrada invalida, por favor digite novamente");
+            input.nextLine();
+        }
+    }
+
+    private static void listarHistoricoReu(Scanner input, Tribunal tribunal) throws ReuNaoEncontradoException, java.util.InputMismatchException {
+        try {
+            if (tribunal.reus.isEmpty()) {
+                System.out.println("nao foi possivel realizar a operacao, pq a lista de reus esta vazia");
+            } else {
+                System.out.print("qual o id do reu que vc deseja registrar um historico criminal?");
+                int idReu = input.nextInt();
+
+                Reu reu = tribunal.reus.stream()
+                        .filter(a -> a.getIdPessoa() == idReu)
+                        .findFirst()
+                        .orElseThrow(() -> new ReuNaoEncontradoException("nao foi possivel registrar historico criminal do reu, pois este nao foi encontradi"));
+
+                reu.exibirDetalhes();
+                System.out.println("1 - sim");
+                System.out.println("2 - não");
+                System.out.println("--------------");
+                System.out.print("esse é o reu que vc deseja registrar historico criminal?");
+                int opcao = input.nextInt();
+
+                switch (opcao) {
+                    case 1:
+                        if (reu.historicoCriminal.isEmpty()) {
+                            System.out.println("a lista de historico criminal do reu esta vazia");
+                        } else {
+                            System.out.println("===== HISTORICO CRIMINAL DO REU " +reu.getNomePessoa().toUpperCase()+ " =====");
+                            for (String historico : reu.historicoCriminal) {
+                                System.out.println(historico);
+                                System.out.println("---------------");
+                            }
+                        }
+                        break;
+
+                    case 2:
+                        System.out.println("se vc deseja listar o historico criminal de um reu, por favor insira novamente");
+                    default:
+                        System.out.println("opcao invalida, por favor insira novamente");
+                }
+            }
+        } catch (ReuNaoEncontradoException e) {
+            System.out.println(e.getMessage());
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("entrada invalida, por favor digite novamente");
+        }
+    }
+
+    private static void defenderReu(Tribunal tribunal) throws ProcessoNaoEncontradoException, java.util.InputMismatchException {
+        try {
+            tribunal.advogadoDefenderReu();
+        } catch (ProcessoNaoEncontradoException e) {
             System.out.println(e.getMessage());
         } catch (java.util.InputMismatchException e) {
             System.out.println("entrada invalida, por favor digite novamente");
