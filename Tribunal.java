@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Tribunal {
     Scanner input = new Scanner(System.in);
@@ -140,25 +141,29 @@ public class Tribunal {
                 .findFirst()
                 .orElseThrow(() -> new ProcessoNaoEncontradoException("nao foi possivel fazer a defesa do reu pois o caso nao foi encontrado"));
 
-        caso.getAdvogadoResponsavel().defenderReu(caso);
+        if (caso.getStatusDoCaso() == StatusProcesso.FINALIZADO) {
+            System.out.println("nao é possivel deender o reu mais pois o processo ja foi finalizado");
+        } else {
+            caso.getAdvogadoResponsavel().defenderReu(caso);
+        }
         
     }
 
-    public void ordenarCasosPeloStatus() {
-        for (CasoJuridico caso : casosDoTribunal.values()) {
-            List<CasoJuridico> casos = casosDoTribunal.values().stream()
-                    .sorted(Comparator.comparing(CasoJuridico::getStatusDoCaso))
-                    .toList();
+    public void ordenarCasosPeloStatus(Tribunal tribunal) {
+        List<CasoJuridico> casos = tribunal.casosDoTribunal.values().stream()
+                .sorted(Comparator.comparing(CasoJuridico::getStatusDoCaso))
+                .toList();
 
-            if (casos.isEmpty()) {
-                System.out.println("nao há nenhum caso juridico");
-            } else {
+        if (casos.isEmpty()) {
+            System.out.println("nao há nenhum caso juridico");
+        } else {
+            for (CasoJuridico caso : casos) {
                 caso.exibirDetalhesCaso();
             }
         }
     }
 
-    public void filtrarCasosPorTipo() throws IllegalArgumentException {
+    public void filtrarCasosPorTipo(Tribunal tribunal) throws IllegalArgumentException {
         System.out.println("1 - civil");
         System.out.println("2 - criminal");
         System.out.println("3 - trabalhista");
@@ -175,18 +180,19 @@ public class Tribunal {
             default -> throw new IllegalArgumentException("opcao invalida, por favor digite novamente");
         };
 
-        for (CasoJuridico casos : casosDoTribunal.values()) {
-            List<CasoJuridico> caso = casosDoTribunal.values().stream()
-                    .filter(a -> a.getTipoDeCaso() == tipo)
-                    .toList();
+        List<CasoJuridico> caso = tribunal.casosDoTribunal.values().stream()
+                .filter(a -> a.getTipoDeCaso() == tipo)
+                .toList();
 
-            if (caso.isEmpty()) {
-                System.out.println("nao há nenhum caso do tipo " +tipo);
-            } else {
-                System.out.println("===== CASOS " +tipo+ " =====");
+        if (caso.isEmpty()) {
+            System.out.println("nao há nenhum caso do tipo " + tipo);
+        } else {
+            System.out.println("===== CASOS " + tipo + " =====");
+            for (CasoJuridico casos : caso) {
                 casos.exibirDetalhesCaso();
             }
         }
+
     }
 
 }

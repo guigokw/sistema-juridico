@@ -33,15 +33,6 @@ public class Reu extends Pessoa{
         System.out.println("ID DO RÉU: " +this.idPessoa);
         System.out.println("NOME DO RÉU: " +this.nomePessoa);
         System.out.println("IDADE DO RÉU: " +this.idadeReu);
-        if (historicoCriminal.isEmpty()) {
-            System.out.println("HISTORICO CRIMINAL: o reu nao ha nenhum delito registrado");
-        } else {
-            System.out.println("====== HISTORICO CRIMINAL ======");
-            for (String crimes : historicoCriminal) {
-                System.out.println(crimes);
-                System.out.println("--------------------------");
-            }
-        }
     }
 
     public void adicionarHistoricoCriminal() throws IllegalArgumentException {

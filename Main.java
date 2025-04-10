@@ -18,7 +18,10 @@ public class Main {
                 System.out.println("8 - listar casos julgados do juiz especifico");
                 System.out.println("9 - listar historico criminal de um reu especifico");
                 System.out.println("10 - defender reu");
-
+                System.out.println("11 - ordenar casos pelo status");
+                System.out.println("12 - filtrar casos por tipo");
+                System.out.println("13 - proferir sentença");
+                System.out.println("14 - sair do programa");
 
                 System.out.print("qual dessas opcoes vc escolhe?");
                 int opcao = input.nextInt();
@@ -35,6 +38,16 @@ public class Main {
                     case 7 -> listarClientesAdvogado(input, tribunal);
                     case 8 -> listaCasosJuiz(input, tribunal);
                     case 9 -> listarHistoricoReu(input, tribunal);
+                    case 10 -> defenderReu(input, tribunal);
+                    case 11 -> ordenarCasos(input, tribunal);
+                    case 12 -> filtrarCasos(input, tribunal);
+                    case 13 -> proferirSentenca(input, tribunal);
+                    case 14 -> {
+                        System.out.println("saindo do programa.....");
+                        input.close();
+                        return;
+                    }
+                    default -> System.out.println("opcao invalida, por favor digite novamente");
                 }
             } catch (java.util.InputMismatchException e) {
                 System.out.println("entrada invalida, por favor digite novamente");
@@ -96,7 +109,7 @@ public class Main {
                 default -> throw new IllegalArgumentException("opcao invalida, por favor digite novamente");
             };
 
-            Advogado advogado = new Advogado(idPessoa, nomePessoa, numeroOab.replaceAll("[\\D]", "").strip(), tipo);
+            Advogado advogado = new Advogado(idPessoa, nomePessoa, numeroOab.replaceAll("\\D", "").strip(), tipo);
             tribunal.adicionarAdvogado(advogado);
 
         } catch (IllegalArgumentException | AdvogadoDuplicadoException e) {
@@ -250,6 +263,7 @@ public class Main {
                             System.out.println("====== LISTA DE CLIENTES DO ADVOGADO " + advogado.getNomePessoa().toUpperCase() + " ======");
                             for (Reu reus : advogado.clientesAdvogado.values()) {
                                 reus.exibirDetalhes();
+                                System.out.println("-----------");
                             }
                         }
                         break;
@@ -298,6 +312,7 @@ public class Main {
                             System.out.println("===== LISTA DE CASOS JULGADOS DO JUIZ " +juiz.getNomePessoa().toUpperCase()+ " ======");
                             for (CasoJuridico casos : juiz.casosJulgados.values()) {
                                 casos.exibirDetalhesCaso();
+                                System.out.println("-------------");
                             }
                         }
                         break;
@@ -321,7 +336,7 @@ public class Main {
             if (tribunal.reus.isEmpty()) {
                 System.out.println("nao foi possivel realizar a operacao, pq a lista de reus esta vazia");
             } else {
-                System.out.print("qual o id do reu que vc deseja registrar um historico criminal?");
+                System.out.print("qual o id do reu que vc deseja listar o historico criminal?");
                 int idReu = input.nextInt();
 
                 Reu reu = tribunal.reus.stream()
@@ -333,7 +348,7 @@ public class Main {
                 System.out.println("1 - sim");
                 System.out.println("2 - não");
                 System.out.println("--------------");
-                System.out.print("esse é o reu que vc deseja registrar historico criminal?");
+                System.out.print("esse é o reu que vc deseja listar historico criminal?");
                 int opcao = input.nextInt();
 
                 switch (opcao) {
@@ -359,16 +374,49 @@ public class Main {
             System.out.println(e.getMessage());
         } catch (java.util.InputMismatchException e) {
             System.out.println("entrada invalida, por favor digite novamente");
+            input.nextLine();
         }
     }
 
-    private static void defenderReu(Tribunal tribunal) throws ProcessoNaoEncontradoException, java.util.InputMismatchException {
+    private static void defenderReu(Scanner input, Tribunal tribunal) throws ProcessoNaoEncontradoException, java.util.InputMismatchException {
         try {
             tribunal.advogadoDefenderReu();
         } catch (ProcessoNaoEncontradoException e) {
             System.out.println(e.getMessage());
         } catch (java.util.InputMismatchException e) {
             System.out.println("entrada invalida, por favor digite novamente");
+            input.nextLine();
+        }
+    }
+
+    private static void ordenarCasos(Scanner input, Tribunal tribunal) throws java.util.InputMismatchException {
+        try {
+            tribunal.ordenarCasosPeloStatus(tribunal);
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("entrada invalida, por favor digite novamente");
+            input.nextLine();
+        }
+    }
+
+    private static void filtrarCasos(Scanner input, Tribunal tribunal) throws IllegalArgumentException, java.util.InputMismatchException {
+        try {
+            tribunal.filtrarCasosPorTipo(tribunal);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("entrada invalida, por favor digite novamente");
+            input.nextLine();
+        }
+    }
+
+    private static void proferirSentenca(Scanner input, Tribunal tribunal) throws JuizNaoEncontradoException, ProcessoNaoEncontradoException, java.util.InputMismatchException {
+        try {
+            tribunal.proferirSentencaCaso();
+        } catch (JuizNaoEncontradoException | ProcessoNaoEncontradoException e) {
+            System.out.println(e.getMessage());
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("entrada invalida, por favor digite novamente");
+            input.nextLine();
         }
     }
 }

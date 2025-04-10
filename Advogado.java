@@ -75,6 +75,8 @@ public class Advogado extends Pessoa {
         System.out.print("esse é o reu que vc deseja defender?");
         int opcao = input.nextInt();
 
+        input.nextLine();
+
         switch (opcao) {
             case 1:
                 System.out.print("insira a defesa que deseja fazer ao reu:");

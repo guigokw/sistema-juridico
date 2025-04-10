@@ -81,7 +81,7 @@ public class CasoJuridico {
     }
 
     public void setVeredicto(Sentenca veredicto) {
-        this.veredicto = null;
+        this.veredicto = veredicto;
     }
 
     public void exibirDetalhesCaso() {

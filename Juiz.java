@@ -35,14 +35,6 @@ public class Juiz extends Pessoa {
         System.out.println("ID DO JUIZ: " +this.idPessoa);
         System.out.println("NOME DO JUIZ: " +this.nomePessoa);
         System.out.println("ANOS DE EXPERIENCIA: " +this.anosExperiencia);
-        if (casosJulgados.isEmpty()) {
-            System.out.println("CASOS JULGADOS: nao há nenhum caso julgado");
-        } else {
-            System.out.println("====== LISTA DE CASOS ======");
-            for (int casos : casosJulgados.keySet()) {
-                System.out.println(casosJulgados.get(casos));
-            }
-        }
     }
 
     public void proferirSentenca(Juiz juiz) throws ProcessoNaoEncontradoException {
