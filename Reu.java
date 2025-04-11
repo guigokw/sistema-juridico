@@ -13,6 +13,8 @@ public class Reu extends Pessoa{
         super(idPessoa, nomePessoa);
         if (idadeReu < 18 || idadeReu > 120) {
             throw new IllegalArgumentException("nao foi possivel adicionar o reu pois a idade esta invalida");
+        } else {
+            this.idadeReu = idadeReu;
         }
     }
 

@@ -8,20 +8,22 @@ public class Main {
 
         while (true) {
             try {
-                System.out.println("1 - cadastrar reus");
-                System.out.println("2 - cadastrar advogado");
-                System.out.println("3 - cadastrar juiz");
-                System.out.println("4 - adicionar caso");
-                System.out.println("5 - listar todos os casos Juridicos");
-                System.out.println("6 - mudar de advogado no processo");
-                System.out.println("7 - listar clientes do advogado especifico");
-                System.out.println("8 - listar casos julgados do juiz especifico");
-                System.out.println("9 - listar historico criminal de um reu especifico");
-                System.out.println("10 - defender reu");
-                System.out.println("11 - ordenar casos pelo status");
-                System.out.println("12 - filtrar casos por tipo");
-                System.out.println("13 - proferir sentença");
-                System.out.println("14 - sair do programa");
+                System.out.println("====== MENU =======");
+                System.out.println("| 1 - cadastrar reus |");
+                System.out.println("| 2 - cadastrar advogado |");
+                System.out.println("| 3 - cadastrar juiz |");
+                System.out.println("| 4 - adicionar caso |");
+                System.out.println("| 5 - listar todos os casos Juridicos |");
+                System.out.println("| 6 - mudar de advogado no processo |");
+                System.out.println("| 7 - listar clientes do advogado especifico |");
+                System.out.println("| 8 - listar casos julgados do juiz especifico |");
+                System.out.println("| 9 - listar historico criminal de um reu especifico |");
+                System.out.println("| 10 - defender reu |");
+                System.out.println("| 11 - ordenar casos pelo status |");
+                System.out.println("| 12 - filtrar casos por tipo |");
+                System.out.println("| 13 - proferir sentença |");
+                System.out.println("| 14 - sair do programa |");
+                System.out.println("===============================");
 
                 System.out.print("qual dessas opcoes vc escolhe?");
                 int opcao = input.nextInt();
@@ -56,7 +58,8 @@ public class Main {
         }
     }
 
-    private static void cadastrarReu(Scanner input, Tribunal tribunal) {
+
+    private static void cadastrarReu(Scanner input, Tribunal tribunal) throws IllegalArgumentException, ReuDuplicadoException, java.util.InputMismatchException {
         try {
             System.out.print("qual o id do reu?");
             int idPessoa = input.nextInt();
@@ -79,6 +82,7 @@ public class Main {
             input.nextLine();
         }
     }
+
 
     private static void cadastrarAdvogado(Scanner input, Tribunal tribunal) throws IllegalArgumentException, AdvogadoDuplicadoException, java.util.InputMismatchException {
         try {
@@ -120,7 +124,8 @@ public class Main {
         }
     }
 
-    private static void cadastrarJuiz(Scanner input, Tribunal tribunal) throws IllegalArgumentException, java.util.InputMismatchException {
+
+    private static void cadastrarJuiz(Scanner input, Tribunal tribunal) throws IllegalArgumentException, java.util.InputMismatchException, JuizDuplicadoException {
         try {
             System.out.print("qual o id do juiz?");
             int idPessoa = input.nextInt();
@@ -136,13 +141,14 @@ public class Main {
             Juiz juiz = new Juiz(idPessoa, nomePessoa, anosExperiencia);
             tribunal.adicionarJuiz(juiz);
 
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | JuizDuplicadoException e) {
             System.out.println(e.getMessage());
         } catch (java.util.InputMismatchException e) {
             System.out.println("entrada invalida, por favor digite novamente");
             input.nextLine();
         }
     }
+
 
     private static void adicionarCaso(Scanner input, Tribunal tribunal) throws IllegalArgumentException, java.util.InputMismatchException, AdvogadoNaoEncontradoException, JuizNaoEncontradoException, ReuDuplicadoException, ReuNaoEncontradoException {
         try {
@@ -170,7 +176,6 @@ public class Main {
 
                 System.out.println("1 - aberto");
                 System.out.println("2 - em andamento");
-                System.out.println("3 - finalizado");
                 System.out.println("----------------");
                 System.out.print("qual é o status do processo?");
                 int opcao2 = input.nextInt();
@@ -178,7 +183,6 @@ public class Main {
                 StatusProcesso status = switch (opcao2) {
                     case 1 -> StatusProcesso.ABERTO;
                     case 2 -> StatusProcesso.EM_ANDAMENTO;
-                    case 3 -> StatusProcesso.FINALIZADO;
                     default -> throw new IllegalArgumentException("opcao invalida, por favor digite novamente");
                 };
 
@@ -219,6 +223,7 @@ public class Main {
             input.nextLine();
         }
     }
+
 
     private static void listarCasosJuridicos(Tribunal tribunal) {
         tribunal.listarTodosCasosJuridicos();

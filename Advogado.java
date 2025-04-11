@@ -40,6 +40,10 @@ public class Advogado extends Pessoa {
         this.especialidadeAdvogado = especialidadeAdvogado;
     }
 
+    public Map<Integer, Reu> getClientesAdvogado() {
+        return clientesAdvogado;
+    }
+
     @Override
     public void exibirDetalhes() {
         System.out.println("ID DO ADVOGADO: " +this.idPessoa);
@@ -52,7 +56,7 @@ public class Advogado extends Pessoa {
 
     public void adicionarClienteAoAdvogado(Reu reu) throws ReuDuplicadoException {
         if (!idReu.add(reu.getIdPessoa())) {
-            throw new ReuDuplicadoException("nao foi possivel adicionar o reu a lista de clientes do advogado pois o reu esta duplicado");
+            throw new ReuDuplicadoException("nao foi possivel adicionar o reu a lista de clientes do advogado pois o reu ja esta na lista de clientes do advogado");
         } else {
             clientesAdvogado.put(reu.getIdPessoa(), reu);
             System.out.println("cliente " +reu.getNomePessoa()+ " adicionado a lista de clientes do advpgado " +this.nomePessoa);

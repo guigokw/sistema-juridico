@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Tribunal {
     Scanner input = new Scanner(System.in);
@@ -11,6 +10,8 @@ public class Tribunal {
     List<Juiz> juizes = new ArrayList<>();
     List<Reu> reus = new ArrayList<>();
     Set<Integer> idDoReu = new HashSet<>();
+    Set<Integer> idDoAdvogado = new HashSet<>();
+    Set<Integer> idDoJuiz = new HashSet<>();
 
     public void adicionarCaso(int numeroCaso, CasoJuridico caso) throws NumeroProcessoDuplicadoException {
         if (!numeroProcesso.add(numeroCaso)) {
@@ -22,17 +23,21 @@ public class Tribunal {
     }
 
     public void adicionarAdvogado(Advogado advogado) throws AdvogadoDuplicadoException {
-        if (!numeroOab.add(advogado.getNumeroOab())) {
-            throw new AdvogadoDuplicadoException("nao foi possivel adicionar o advogado pois o numero da oab esta duplicado");
+        if (!numeroOab.add(advogado.getNumeroOab()) || !idDoAdvogado.add(advogado.getIdPessoa())) {
+            throw new AdvogadoDuplicadoException("nao foi possivel adicionar o advogado pois o numero da oab ou o numero do id esta duplicado");
         } else {
             advogados.add(advogado);
             System.out.println("advogado " + advogado.nomePessoa + " adicionado a lista de advogados");
         }
     }
 
-    public void adicionarJuiz(Juiz juiz) {
-        juizes.add(juiz);
-        System.out.println("juiz " + juiz.nomePessoa + " adicionado a lista de juizes");
+    public void adicionarJuiz(Juiz juiz) throws JuizDuplicadoException {
+        if (!idDoJuiz.add(juiz.getIdPessoa())) {
+            throw new JuizDuplicadoException("nao foi possivel adicionar o juiz pois o id esta invalido");
+        } else {
+            juizes.add(juiz);
+            System.out.println("juiz " + juiz.nomePessoa + " adicionado a lista de juizes");
+        }
     }
 
     public void cadastrarReu(Reu reu) {
@@ -94,7 +99,16 @@ public class Tribunal {
                     int opcao2 = input.nextInt();
 
                     if (opcao2 == 1) {
-                        caso.getAdvogadoResponsavel().removerClienteDoAdvogado(caso.getReuDoCaso());
+                        long casosComMesmoAdvogadoEReu = casosDoTribunal.values().stream()
+                                .filter(c -> c != caso)
+                                .filter(c -> c.getAdvogadoResponsavel().equals(caso.getAdvogadoResponsavel()))
+                                .filter(c -> c.getReuDoCaso().equals(caso.getReuDoCaso()))
+                                .count();
+
+                        if (casosComMesmoAdvogadoEReu == 0) {
+                            caso.getAdvogadoResponsavel().removerClienteDoAdvogado(caso.getReuDoCaso());
+                        }
+
                         caso.setAdvogadoResponsavel(advogado);
                         advogado.adicionarClienteAoAdvogado(caso.getReuDoCaso());
                         System.out.println("advogado " + advogado.getNomePessoa() + " registrado no processo de numero " + caso.getNumeroProcesso());
