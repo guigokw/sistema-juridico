@@ -52,8 +52,8 @@ Um dos principais focos do sistema é evitar inconsistências, como a remoção 
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/seu-usuario/seu-repositorio.git
-   cd https://github.com/guigokw/sistema-juridico.git
+   git clone https://github.com/guigokw/sistema-juridico.git
+   cd seu-repositorio
 
 2.   Abra o projeto em sua IDE Java favorita (ex: IntelliJ, Eclipse, VSCode com extensão Java).
 
@@ -111,3 +111,6 @@ Desenvolvido com 💻 e ☕ por Luiz guilherme carvalho ribeiro
 
 🔗 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/luiz-guilherme-carvalho-ribeiro-12032829b/) • 🐙 
 https://github.com/guigokw
+
+![ChatGPT Image 16 de abr  de 2025, 14_57_19](https://github.com/user-attachments/assets/3f7237b1-2e43-4978-9366-1fdbb401e6c5)
+
