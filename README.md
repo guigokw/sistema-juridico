@@ -43,6 +43,7 @@ Um dos principais focos do sistema é evitar inconsistências, como a remoção 
 - **Paradigma Orientado a Objetos (POO)**
 - **Coleções Java (List, Map, Stream API)**
 - **Tratamento de Exceções Personalizadas**
+- **Stream API**
 - **Entrada via Terminal (Scanner)**
 
 ---
@@ -84,6 +85,8 @@ Um dos principais focos do sistema é evitar inconsistências, como a remoção 
 - 🌐 API REST para integração com outros sistemas
 
 - 📊 Relatórios e filtros por tipo de caso, advogado, status, etc.
+
+- 🧪 Testes unitários com JUnit
   
 
   ## 🤝 Contribuição
