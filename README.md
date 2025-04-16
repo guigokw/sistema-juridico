@@ -51,8 +51,8 @@ Um dos principais focos do sistema é evitar inconsistências, como a remoção 
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/guigokw/sistema-juridico.git
-   cd seu-repositorio
+  git clone https://github.com/guigokw/sistema-juridico.git
+  cd sistema-juridico
 
 2.   Abra o projeto em sua IDE Java favorita (ex: IntelliJ, Eclipse, VSCode com extensão Java).
 
