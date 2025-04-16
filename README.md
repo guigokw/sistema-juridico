@@ -10,7 +10,6 @@ Sistema em Java para gerenciar advogados, réus e casos jurídicos, permitindo o
 - [🚀 Funcionalidades](#-funcionalidades)
 - [🛠️ Tecnologias Utilizadas](#️-tecnologias-utilizadas)
 - [⚙️ Como Executar](#️-como-executar)
-- [📂 Estrutura de Diretórios](#-estrutura-de-diretórios)
 - [📈 Melhorias Futuras](#-melhorias-futuras)
 - [🤝 Contribuição](#-contribuição)
 - [📄 Licença](#-licença)
@@ -58,23 +57,6 @@ Um dos principais focos do sistema é evitar inconsistências, como a remoção 
 2.   Abra o projeto em sua IDE Java favorita (ex: IntelliJ, Eclipse, VSCode com extensão Java).
 
 3. Compile e execute a classe principal, que inicia o sistema interativo no terminal.
-
-## 📁 estrutura de diretorio
-
-📁 src/
-│
-├── exceptions/
-│   ├── AdvogadoNaoEncontradoException.java
-│   └── ProcessoNaoEncontradoException.java
-│
-├── modelos/
-│   ├── Advogado.java
-│   ├── Cliente.java
-│   └── CasoJuridico.java
-│
-├── sistema/
-│   ├── SistemaTribunal.java
-│   └── Main.java
 
 ## 📈 Melhorias Futuras
 
